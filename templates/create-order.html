@@ -1,0 +1,57 @@
+{% extends 'base.html' %} 
+
+{% block title %} Create order {% endblock %}
+{% block body %}
+<div class="container">
+  <h1>Create order</h1>
+  <form method="post">
+    <textarea
+      name="description"
+      id="description"
+      class="form-control"
+    ></textarea
+    ><br />
+    <h4 class="mb-3">Order sum</h4>
+    <input type="text" name="sum" id="sum" class="form-control" /><br />
+    <h4 class="mb-3">Payment</h4>
+    <div class="my-3">
+      <div class="form-check">
+        <input
+          id="euro"
+          name="paymentMethod"
+          type="radio"
+          class="form-check-input"
+          checked=""
+          required=""
+          value="eur"
+        />
+        <label class="form-check-label" for="credit">EUR</label>
+      </div>
+      <div class="form-check">
+        <input
+          id="dollar"
+          name="paymentMethod"
+          type="radio"
+          class="form-check-input"
+          required=""
+          value="usd"
+        />
+        <label class="form-check-label" for="debit">USD</label>
+      </div>
+      <div class="form-check">
+        <input
+          id="UAH"
+          name="paymentMethod"
+          type="radio"
+          class="form-check-input"
+          required=""
+          value="UAH"
+        />
+        <label class="form-check-label" for="paypal">UAH</label>
+      </div>
+    </div>
+    <input type="submit" class="btn btn-success" value="Pay" />
+  </form>
+</div>
+
+{% endblock %}
