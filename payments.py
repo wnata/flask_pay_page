@@ -34,7 +34,12 @@ need function that will have possibility to send request POST
     headers={'Accept': 'application/vnd.github.v3.text-match+json'},
 )"""
 
+
+
+
 import requests
+import hashlib
+import json
 
 def cur_dict(currency):
     cur_cod = 0
@@ -43,16 +48,26 @@ def cur_dict(currency):
     elif currency.lower() == 'eur':
         cur_cod = 978
     else:
-        cur_cod = 980
-    
+        cur_cod = 643
+
     return cur_cod
+
+
+def gen_sign(currency, shop_amount, order_id):
+    secret_key = 'SecretKey01'
+    shop_id = '5'
+
+    str = f'{cur_dict(currency)}:{shop_amount}:{cur_dict(currency)}:{shop_id}:{order_id}{secret_key}'
+    hash_object = hashlib.sha256(str.encode())
+
+    return hash_object.hexdigest()
 
 
 def pay_piastr(description, currency, shop_amount, order_id):
     data = {}
-    
+
     data['description'] = description
-    
+
     cur_code = cur_dict(currency)
     data['shop_currency'] = cur_code
     data['payer_currency'] = cur_code
@@ -60,9 +75,9 @@ def pay_piastr(description, currency, shop_amount, order_id):
     data['shop_amount'] = shop_amount
     data['shop_order_id'] = order_id
 
-    data['shop_id'] = '112'
+    data['shop_id'] = '5'
 
-    data['sign'] = "ad7fbe8df102bc70e28deddba8b45bb3f4e6cafdaa69ad1ecc0e8b1d4e770575"
+    data['sign'] = gen_sign(currency, shop_amount, order_id)
 
     url = 'https://core.piastrix.com/bill/create'
 
@@ -70,7 +85,8 @@ def pay_piastr(description, currency, shop_amount, order_id):
         "Content-Type": "application/json"
     }
 
-    print(data)
     response = requests.post(url, json=data, headers=headers)
-    #response.json()
-    return response.json()
+    url = response.json()
+    print(response.json())
+    print (url['data']['url'])
+    return url['data']['url']

@@ -67,8 +67,8 @@ def create_order():
             db.session.commit()
 
             pay =  pay_piastr(description, currency, sum, order_id)
-            print(pay)
-            return redirect('/')
+
+            return redirect(pay)
         except Exception as e:
             print(e)
             return "Error"
